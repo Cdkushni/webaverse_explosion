@@ -537,6 +537,15 @@ physicsManager.setAngularLockFlags = (physicsId, x, y, z) => {
   physx.physxWorker.setAngularLockFlags(physx.physics, physicsId, x, y, z)
 }
 
+physicsManager.createExplosionAtPoint = (blastRange, magnitude, position) => {
+  return physx.physxWorker.createRadialExplosionForceAtPos(
+    physx.physics,
+    blastRange,
+    magnitude,
+    position,
+  )
+}
+
 physicsManager.sweepBox = (
   origin,
   quaternion,

@@ -434,6 +434,14 @@ ioManager.keydown = e => {
       // }
       break;
     }
+    case 71: {
+      game.createExplosionAtPoint();
+      break;
+    }
+    case 82: {
+      game.createBuildingBlocksAtPoint();
+      break;
+    }
     /* case 73: { // I
       inventoryToggle();
       break;

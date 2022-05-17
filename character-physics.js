@@ -251,6 +251,21 @@ class CharacterPhysics {
       velocity.z *= factor;
     }
   }
+  checkCollisionHits() {
+    let result = physicsManager.overlapCapsule(0.5, 1, this.player.position, this.player.quaternion);
+    if (result.objectIds.length > 1) {
+        for (let i = 0; i < result.objectIds.length; i++) {
+            if (result.objectIds[i] == this.player.characterController.physicsId) {
+                continue;
+            }
+            const physicsObject = metaversefileApi.getPhysicsObjectByPhysicsId(result.objectIds[i]);
+            if (physicsObject.collided == true) {
+                console.log("Got Object Collision", physicsObject);
+                break;
+            }
+        }
+    }
+  }
   applyAvatarPhysics(now, timeDiffS) {
     // const renderer = getRenderer();
     // const session = renderer.xr.getSession();
@@ -433,6 +448,7 @@ class CharacterPhysics {
     _updateBowIkAnimation();
   }
   update(now, timeDiffS) {
+    this.checkCollisionHits();
     this.applyGravity(timeDiffS);
     this.updateVelocity(timeDiffS);
     this.applyAvatarPhysics(now, timeDiffS);

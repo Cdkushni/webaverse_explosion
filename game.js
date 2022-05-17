@@ -11,7 +11,7 @@ import cameraManager from './camera-manager.js';
 // import uiManager from './ui-manager.js';
 import ioManager from './io-manager.js';
 // import {loginManager} from './login.js';
-// import physicsManager from './physics-manager.js';
+import physicsManager from './physics-manager.js';
 import dioramaManager from './diorama.js';
 import {world} from './world.js';
 // import * as universe from './universe.js';
@@ -1394,6 +1394,25 @@ class GameManager extends EventTarget {
       };
       localPlayer.setControlAction(flyAction);
     }
+  }
+  createBuildingBlocksAtPoint() {
+    const localPlayer = metaversefileApi.useLocalPlayer();
+    const app = this.closestObject;
+    const spawnRotation = new THREE.Quaternion();
+    let spawnPosition = localPlayer.position;
+    const physicsObject = physicsManager.addBoxGeometry(spawnPosition, spawnRotation, new THREE.Vector3(0.25, 0.25, 0.25), true);
+    physicsObject.physicsMesh.visible = true;
+    physicsManager.enableGeometry(physicsObject);
+    physicsManager.enableGeometryQueries(physicsObject);
+    physicsManager.setGravityEnabled(physicsObject, true);
+    physicsManager.cookConvexGeometry(physicsObject.physicsMesh);
+    app.physicsObjects.push(physicsObject);
+    sceneLowPriority.add(physicsObject);
+  }
+  createExplosionAtPoint() {
+    console.log("Explosion Spawn!");
+    let spawnPosition = localPlayer.position;
+    physicsManager.createExplosionAtPoint(100.0, 1.0, spawnPosition);
   }
   isCrouched() {
     return metaversefileApi.useLocalPlayer().hasAction('crouch');
